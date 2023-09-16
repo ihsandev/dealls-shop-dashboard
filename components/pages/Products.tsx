@@ -14,6 +14,7 @@ import {
   useState,
 } from "react";
 import useFetchCategories from "@/lib/features/useFetchCategories";
+import { formatRupiah } from "@/lib/utils";
 
 const tableHeader = [
   {
@@ -83,7 +84,7 @@ export default function Products() {
       id: product.id,
       title: product.title,
       brand: product.brand,
-      price: product.price,
+      price: formatRupiah(product.price),
       stock: product.stock,
       category: product.category,
     })) ?? [];
