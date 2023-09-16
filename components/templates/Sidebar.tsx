@@ -18,16 +18,16 @@ export default function Sidebar() {
           isOpen && "right-0"
         )}
       />
-      <button
+      <div
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "md:hidden fixed text-3xl z-10 top-3 text-purple-700 transition-all",
+          "cursor-pointer md:hidden fixed text-3xl z-10 top-3 text-purple-700 transition-all",
           !isOpen ? "left-3" : "right-3"
         )}
       >
         {!isOpen && <FiMenu />}
         {isOpen && <FiXCircle />}
-      </button>
+      </div>
       <aside
         className={cn(
           "fixed top-0 bottom-0 w-0 md:w-fit lg:w-72 bg-violet-700 text-slate-50 overflow-y-auto -ml-80 md:ml-0 transition-all",
