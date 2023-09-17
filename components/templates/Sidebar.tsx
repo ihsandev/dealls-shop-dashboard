@@ -3,12 +3,17 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiPackage, FiShoppingCart, FiMenu, FiXCircle } from "react-icons/fi";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <>
       <div
@@ -30,7 +35,7 @@ export default function Sidebar() {
       </div>
       <aside
         className={cn(
-          "fixed top-0 bottom-0 w-0 md:w-fit lg:w-72 bg-violet-700 text-slate-50 overflow-y-auto -ml-80 md:ml-0 transition-all",
+          "fixed z-10 top-0 bottom-0 w-0 md:w-fit lg:w-72 bg-violet-700 text-slate-50 overflow-y-auto -ml-80 md:ml-0 transition-all",
           isOpen && "w-fit ml-0"
         )}
       >
