@@ -19,14 +19,14 @@ export default function Sidebar() {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "fixed top-0 left-0 bottom-0 bg-slate-50 opacity-70 md:hidden transition-all",
+          "fixed z-20 top-0 left-0 bottom-0 bg-slate-50 opacity-70 md:hidden transition-all",
           isOpen && "right-0"
         )}
       />
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "cursor-pointer md:hidden fixed text-2xl z-10 top-3 px-1 text-purple-700 transition-all",
+          "cursor-pointer md:hidden fixed z-20 text-2xl top-3 px-1 text-purple-700 transition-all",
           !isOpen ? "left-3 bg-violet-700 text-white rounded-sm" : "right-3"
         )}
       >
@@ -35,7 +35,7 @@ export default function Sidebar() {
       </div>
       <aside
         className={cn(
-          "fixed z-10 top-0 bottom-0 w-0 md:w-fit lg:w-72 bg-violet-700 text-slate-50 overflow-y-auto -ml-80 md:ml-0 transition-all",
+          "fixed z-20 top-0 bottom-0 w-0 md:w-fit lg:w-72 bg-violet-700 text-slate-50 overflow-y-auto -ml-80 md:ml-0 transition-all",
           isOpen && "w-fit ml-0"
         )}
       >
