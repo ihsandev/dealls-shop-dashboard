@@ -1,5 +1,5 @@
 import { useQuery, QueryKey, UseQueryResult } from "@tanstack/react-query";
-import { axiosInstance } from "../api";
+import { axiosInstance } from "../../api";
 
 interface IUseFetchCategories {
   queryKey: QueryKey;

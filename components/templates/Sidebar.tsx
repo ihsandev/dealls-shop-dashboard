@@ -21,8 +21,8 @@ export default function Sidebar() {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "cursor-pointer md:hidden fixed text-3xl z-10 top-3 text-purple-700 transition-all",
-          !isOpen ? "left-3" : "right-3"
+          "cursor-pointer md:hidden fixed text-2xl z-10 top-3 px-1 text-purple-700 transition-all",
+          !isOpen ? "left-3 bg-violet-700 text-white rounded-sm" : "right-3"
         )}
       >
         {!isOpen && <FiMenu />}

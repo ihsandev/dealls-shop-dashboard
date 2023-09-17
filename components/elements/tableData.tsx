@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -8,19 +10,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-
-interface ITableHeader {
-  label?: string;
-  key: string;
-  index?: number;
-  action?: any;
-}
+import { ITableHeader } from "@/interfaces/global";
+import { useCallback, useMemo } from "react";
 
 export interface IPagination {
   skip: number;
-  totalPages: number;
+  limit: number;
+  totalData: number;
   page: number;
-  onChangePage: (value: string) => void;
+  setPage: (value: number) => void;
 }
 
 interface ITableData {
@@ -44,9 +42,17 @@ export default function TableData({
 }: ITableData) {
   const newHeader = [...header];
   let newData = [...data];
+
+  const totalPages = useMemo(
+    () =>
+      (pagination?.totalData ?? 0) < (pagination?.limit ?? 0)
+        ? 1
+        : Math.ceil((pagination?.totalData ?? 0) / (pagination?.limit ?? 0)),
+    [pagination?.limit, pagination?.totalData]
+  );
+
   const canGoPrev: boolean = (pagination?.page ?? 1) > 1;
-  const canGoNext: boolean =
-    (pagination?.page ?? 1) < (pagination?.totalPages ?? 1);
+  const canGoNext: boolean = (pagination?.page ?? 1) < (totalPages ?? 1);
 
   if (render) {
     for (let i = 0; i < render.header.length; i++) {
@@ -57,6 +63,18 @@ export default function TableData({
       action: render.data,
     }));
   }
+
+  const onChangePage = useCallback(
+    (value: string) => {
+      if (value === "next") {
+        pagination?.setPage(pagination.page + 1);
+      }
+      if (value === "prev") {
+        pagination?.setPage(pagination.page - 1);
+      }
+    },
+    [pagination]
+  );
 
   return (
     <>
@@ -89,8 +107,8 @@ export default function TableData({
             : newData.map((element, i) => (
                 <TableRow
                   key={element.id}
-                  onClick={() => onColumnClick(element)}
-                  style={{ cursor: onColumnClick && "pointer" }}
+                  onClick={() => (onColumnClick ? onColumnClick(element) : {})}
+                  className={onColumnClick && "cursor-pointer"}
                 >
                   {newHeader.some((head) => head.key === "no") && (
                     <td>{i + 1}</td>
@@ -118,29 +136,31 @@ export default function TableData({
               ))}
         </TableBody>
       </Table>
-      <div className="flex justify-end mt-4">
-        <figure className="flex items-center gap-2">
-          <Button
-            size="sm"
-            className="bg-violet-700 hover:bg-violet-600 rounded-full"
-            onClick={() => pagination?.onChangePage("prev")}
-            disabled={!canGoPrev}
-          >
-            Prev
-          </Button>
-          <span>
-            {pagination?.page || 1} / {pagination?.totalPages || 1}
-          </span>
-          <Button
-            size="sm"
-            className="bg-violet-700 hover:bg-violet-600 rounded-full"
-            onClick={() => pagination?.onChangePage("next")}
-            disabled={!canGoNext}
-          >
-            Next
-          </Button>
-        </figure>
-      </div>
+      {pagination && (
+        <div className="flex justify-end mt-4">
+          <figure className="flex items-center gap-2">
+            <Button
+              size="sm"
+              className="bg-violet-700 hover:bg-violet-600 rounded-full"
+              onClick={() => onChangePage("prev")}
+              disabled={!canGoPrev}
+            >
+              Prev
+            </Button>
+            <span>
+              {pagination?.page || 1} / {totalPages || 1}
+            </span>
+            <Button
+              size="sm"
+              className="bg-violet-700 hover:bg-violet-600 rounded-full"
+              onClick={() => onChangePage("next")}
+              disabled={!canGoNext}
+            >
+              Next
+            </Button>
+          </figure>
+        </div>
+      )}
     </>
   );
 }

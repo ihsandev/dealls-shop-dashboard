@@ -5,7 +5,7 @@ import SelectOption from "@/components/elements/selectOption";
 import TableData, { IPagination } from "@/components/elements/tableData";
 import useFetchProducts, {
   IParamsProducts,
-} from "@/lib/features/useFetchProducts";
+} from "@/lib/features/products/useFetchProducts";
 import {
   ChangeEvent,
   SetStateAction,
@@ -13,7 +13,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import useFetchCategories from "@/lib/features/useFetchCategories";
+import useFetchCategories from "@/lib/features/products/useFetchCategories";
 import { formatRupiah } from "@/lib/utils";
 
 const tableHeader = [
@@ -68,11 +68,6 @@ export default function Products() {
     [productsData?.data.total]
   );
 
-  const totalPages = useMemo(
-    () => (totalData < limit ? 1 : Math.ceil(totalData / limit)),
-    [totalData]
-  );
-
   const categories =
     categoriesData?.data.map((category) => ({
       label: category,
@@ -91,19 +86,10 @@ export default function Products() {
 
   const paginationConfig: IPagination = {
     skip,
+    limit,
     page,
-    totalPages,
-    onChangePage: useCallback(
-      (value: string) => {
-        if (value === "next") {
-          setPage(page + 1);
-        }
-        if (value === "prev") {
-          setPage(page - 1);
-        }
-      },
-      [page]
-    ),
+    setPage,
+    totalData,
   };
 
   return (
@@ -147,6 +133,7 @@ export default function Products() {
           </div>
         </div>
         <TableData
+          title="Products"
           header={tableHeader}
           data={products}
           pagination={paginationConfig}

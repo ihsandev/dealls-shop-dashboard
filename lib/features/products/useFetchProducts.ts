@@ -1,10 +1,9 @@
 import { useQuery, QueryKey, UseQueryResult } from "@tanstack/react-query";
-import { axiosInstance } from "../api";
+import { axiosInstance } from "../../api";
 import { IProductResponse } from "@/interfaces/products";
+import { IFetchParams, IResponsePagination } from "@/interfaces/global";
 
-export interface IParamsProducts {
-  skip?: number;
-  limit?: number;
+export interface IParamsProducts extends IFetchParams {
   q?: string;
   category?: string;
 }
@@ -12,6 +11,10 @@ export interface IParamsProducts {
 interface IUseFetchProducts {
   queryKey: QueryKey;
   params: IParamsProducts;
+}
+
+interface IResponseData extends IResponsePagination {
+  products: IProductResponse[];
 }
 
 const getProducts = async (params: IParamsProducts) => {
@@ -34,12 +37,7 @@ export default function useFetchProducts({
   queryKey,
   params,
 }: IUseFetchProducts): UseQueryResult<{
-  data: {
-    limit: number;
-    products: IProductResponse[];
-    skip: number;
-    total: number;
-  };
+  data: IResponseData;
 }> {
   return useQuery({
     queryKey,
